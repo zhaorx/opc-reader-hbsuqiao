@@ -7,3 +7,4 @@ push-url: http://localhost:6666/gas/add
 push-multi-url: http://localhost:6666/gas/multi/add
 points: C210249FI00001010,C210249FI00001020
 region: xinan
+unit-map: '{"C210249FI00001010":"MPa","C210249FI00001020":"Nm3/h"}'
