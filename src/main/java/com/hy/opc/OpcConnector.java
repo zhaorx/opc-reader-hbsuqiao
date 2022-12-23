@@ -2,6 +2,7 @@ package com.hy.opc;
 
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.identity.AnonymousProvider;
+import org.eclipse.milo.opcua.sdk.client.api.identity.UsernameProvider;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscriptionManager;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
@@ -20,6 +21,7 @@ import org.eclipse.milo.opcua.stack.core.types.structured.MonitoringParameters;
 import org.eclipse.milo.opcua.stack.core.types.structured.ReadValueId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
@@ -34,8 +36,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class OpcConnector {
     public Logger logger = LoggerFactory.getLogger(OpcConnector.class);
-//    public final String endPointUrl = "opc.tcp://localhost:49320";
+    //    public final String endPointUrl = "opc.tcp://localhost:49320";
     public AtomicInteger atomic = new AtomicInteger(1);
+
+    @Value("${username}")
+    private String username;
+    @Value("${password}")
+    private String password;
 
 
     /**
@@ -61,7 +68,7 @@ public class OpcConnector {
                                 .setApplicationName(LocalizedText.english("eclipse milo opc-ua client"))
                                 .setApplicationUri("urn:eclipse:milo:examples:client")
                                 //访问方式
-                                .setIdentityProvider(new AnonymousProvider())
+                                .setIdentityProvider(new UsernameProvider(username, password))
                                 .setRequestTimeout(UInteger.valueOf(5000))
                                 .build()
         );

@@ -2,9 +2,19 @@ spring:
   main:
     web-application-type: none
 interval: 60000
-opc-url: opc.tcp://localhost:49320
+opc-url: opc.tcp://10.73.30.224:48400
+username: admin
+password: admin
 push-url: http://localhost:6666/gas/add
 push-multi-url: http://localhost:6666/gas/multi/add
-points: C210249FI00001010,C210249FI00001020
 region: xinan
-unit-map: '{"C210249FI00001010":"MPa","C210249FI00001020":"Nm3/h"}'
+points:
+  list:
+    - { point: 霸州分输站\流量计1参数\BKSSLL, unit: Nm3/h }
+    - { point: 霸州分输站\流量计1参数\GDYL, unit: MPa }
+    - { point: 霸州分输站\流量计2参数\BKSSLL, unit: Nm3/h }
+    - { point: 霸州分输站\流量计2参数\GDYL, unit: MPa }
+    - { point: 霸州分输站\流量计3参数\BKSSLL, unit: Nm3/h }
+    - { point: 霸州分输站\流量计3参数\GDYL, unit: MPa }
+    - { point: 霸州分输站\流量计4参数\BKSSLL, unit: Nm3/h }
+    - { point: 霸州分输站\流量计4参数\GDYL, unit: MPa }

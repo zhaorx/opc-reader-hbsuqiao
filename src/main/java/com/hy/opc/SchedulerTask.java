@@ -2,11 +2,13 @@ package com.hy.opc;
 
 
 import com.hy.opc.model.Gas;
+import com.hy.opc.model.Points;
 import com.hy.opc.model.WritterResult;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,12 +31,10 @@ public class SchedulerTask {
     private String pushMultiUrl;
     @Value("${opc-url}")
     private String opcUrl;
-    @Value("${points:}")
-    private String[] points;
     @Value("${region}")
     private String region;
-    @Value("#{${unit-map}}")
-    private Map<String, String> unitMap;
+    @Autowired
+    private Points points;
 
     private String sep = "_";
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -48,22 +48,28 @@ public class SchedulerTask {
     public void transferSchedule() throws Exception {
         logger.info("starting transfer...");
 
-
-        Gas g = new Gas();
-        g.setTs(sdf.format(new Date()));
-        g.setRegion(region);
         List<Gas> addList = new ArrayList<>();
-        for (int i = 0; i < points.length; i++) {
-            String point = points[i];
-            Gas gas = this.getRecentGas(point,g);
-            addList.add(gas);
+        List<Gas> list = points.getList();
+        String dateStr = sdf.format(new Date());
+        for (int i = 0; i < list.size(); i++) {
+            Gas item = list.get(i);
+            Gas g = new Gas();
+            g.setTs(dateStr);
+            g.setPoint(item.getPoint());
+            g.setPname(item.getPoint());
+            g.setUnit(item.getUnit());
+            g.setRegion(region);
+            Double value = this.getPointValue(item.getPoint());
+            g.setValue(value);
+            logger.debug("######point_data:" + g.toString());
+            addList.add(g);
         }
 
         WritterResult result = this.addMultiTaos(addList);
         logger.info(result.getMessage());
     }
 
-    public Gas getRecentGas(String point, Gas gas) throws Exception {
+    public Double getPointValue(String point) throws Exception {
         //创建OPC UA客户端
         if (opcUaClient == null) {
             opcUaClient = connector.createClient(opcUrl);
@@ -73,12 +79,8 @@ public class SchedulerTask {
 
         //读
         DataValue data = connector.readNode(opcUaClient, point);
-        gas.setValue((Double) data.getValue().getValue());
-        gas.setPoint(point);
-        gas.setPname(point);
-        gas.setUnit(unitMap.get(point));
 
-        return gas;
+        return (Double) data.getValue().getValue();
     }
 
     public WritterResult addMultiTaos(List<Gas> list) {

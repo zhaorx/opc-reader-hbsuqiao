@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.hy</groupId>
-    <artifactId>opc-reader</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>opc-reader-hbsuqiao</artifactId>
+    <version>0.1</version>
     <name>opc-reader</name>
-    <description>opc-reader</description>
+    <description>opc-reader-hbsuqiao</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
