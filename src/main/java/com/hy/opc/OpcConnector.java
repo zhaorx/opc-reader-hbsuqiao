@@ -81,14 +81,31 @@ public class OpcConnector {
      * @param client OPC UA客户端
      * @throws Exception
      */
-    public DataValue readNode(OpcUaClient client, String point) throws Exception {
+    public DataValue readNodeByString(OpcUaClient client, String point) throws Exception {
         int namespaceIndex = 2;
         //节点
         NodeId nodeId = new NodeId(namespaceIndex, point);
+
         //读取节点数据
         DataValue value = client.readValue(0.0, TimestampsToReturn.Server, nodeId).get();
-        //标识符
-        System.out.println(String.valueOf(nodeId.getIdentifier()) + ": " + String.valueOf(value.getValue().getValue()));
+        logger.debug("######read_node:" + String.valueOf(nodeId.getIdentifier()) + ": " + String.valueOf(value.getValue().getValue()));
+        return value;
+    }
+
+    /**
+     * 读取节点数据
+     *
+     * @param client OPC UA客户端
+     * @throws Exception
+     */
+    public DataValue readNodeByInt(OpcUaClient client, int point) throws Exception {
+        int namespaceIndex = 2;
+        //节点
+        NodeId nodeId = new NodeId(namespaceIndex, point);
+
+        //读取节点数据
+        DataValue value = client.readValue(0.0, TimestampsToReturn.Server, nodeId).get();
+        logger.debug("######read_node:" + String.valueOf(nodeId.getIdentifier()) + ": " + String.valueOf(value.getValue().getValue()));
         return value;
     }
 

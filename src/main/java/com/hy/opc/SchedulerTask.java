@@ -58,7 +58,7 @@ public class SchedulerTask {
             Gas g = new Gas();
             g.setTs(dateStr);
             g.setPoint(region + sep + item.getTableName());
-            g.setPname(region + sep + item.getPoint());
+            g.setPname(region + sep + item.getPname());
             g.setUnit(item.getUnit());
             g.setRegion(region);
             Double value = this.getPointValue(item.getPoint());
@@ -86,6 +86,7 @@ public class SchedulerTask {
     }
 
     public Double getPointValue(String point) throws Exception {
+        int point_int = Integer.parseInt(point);
         //创建OPC UA客户端
         if (opcUaClient == null) {
             opcUaClient = connector.createClient(opcUrl);
@@ -94,7 +95,7 @@ public class SchedulerTask {
         }
 
         //读
-        DataValue data = connector.readNode(opcUaClient, point);
+        DataValue data = connector.readNodeByInt(opcUaClient, point_int);
         if (data.getValue().getValue() == null) {
             return Double.MIN_VALUE;
         }

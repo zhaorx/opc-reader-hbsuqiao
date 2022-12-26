@@ -33,7 +33,7 @@ class OPCReaderApplicationTests {
         opcConnector.browseNode(opcUaClient, null);
 
         //读
-        opcConnector.readNode(opcUaClient, "模拟器示例.函数.Ramp1");
+        opcConnector.readNodeByString(opcUaClient, "模拟器示例.函数.Ramp1");
 
 
         //订阅
