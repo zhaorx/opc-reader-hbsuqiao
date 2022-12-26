@@ -69,6 +69,7 @@ public class OpcConnector {
                                 .setApplicationUri("urn:eclipse:milo:examples:client")
                                 //访问方式
                                 .setIdentityProvider(new UsernameProvider(username, password))
+//                                .setIdentityProvider(new AnonymousProvider())
                                 .setRequestTimeout(UInteger.valueOf(5000))
                                 .build()
         );
@@ -85,7 +86,7 @@ public class OpcConnector {
         //节点
         NodeId nodeId = new NodeId(namespaceIndex, point);
         //读取节点数据
-        DataValue value = client.readValue(0.0, TimestampsToReturn.Neither, nodeId).get();
+        DataValue value = client.readValue(0.0, TimestampsToReturn.Server, nodeId).get();
         //标识符
         System.out.println(String.valueOf(nodeId.getIdentifier()) + ": " + String.valueOf(value.getValue().getValue()));
         return value;
@@ -247,7 +248,7 @@ public class OpcConnector {
             if (Objects.requireNonNull(nd.getBrowseName().getName()).contains("_")) {
                 continue;
             }
-//            System.out.println("Node= " + nd.getBrowseName().getName());
+            System.out.println("Node= " + nd.getBrowseName().getName());
             browseNode(client, nd);
         }
     }

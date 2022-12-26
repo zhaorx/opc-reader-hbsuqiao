@@ -2,11 +2,12 @@ package com.hy.opc.model;
 
 public class Gas {
     private String ts;
-    private String point ;
-    private String pname ;
-    private String unit ;
-    private String region ;
-    private double value ;
+    private String point;
+    private String tableName;
+    private String pname;
+    private String unit;
+    private String region;
+    private double value;
 
     public String getTs() {
         return ts;
@@ -54,6 +55,14 @@ public class Gas {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     @Override

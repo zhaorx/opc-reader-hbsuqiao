@@ -9,11 +9,12 @@ push-url: http://localhost:6666/gas/add
 push-multi-url: http://localhost:6666/gas/multi/add
 region: xinan
 points:
-  - { point: 霸州分输站\流量计1参数\BKSSLL, unit: Nm3/h }
-  - { point: 霸州分输站\流量计1参数\GDYL, unit: MPa }
-  - { point: 霸州分输站\流量计2参数\BKSSLL, unit: Nm3/h }
-  - { point: 霸州分输站\流量计2参数\GDYL, unit: MPa }
-  - { point: 霸州分输站\流量计3参数\BKSSLL, unit: Nm3/h }
-  - { point: 霸州分输站\流量计3参数\GDYL, unit: MPa }
-  - { point: 霸州分输站\流量计4参数\BKSSLL, unit: Nm3/h }
-  - { point: 霸州分输站\流量计4参数\GDYL, unit: MPa }
+  list:
+    - { point: 霸州分输站\流量计1参数\BKSSLL, unit: Nm3/h ,tableName: flow1_BKSSLL }
+    - { point: 霸州分输站\流量计1参数\GDYL, unit: MPa ,tableName: flow1_GDYL }
+    - { point: 霸州分输站\流量计2参数\BKSSLL, unit: Nm3/h ,tableName: flow2_BKSSLL }
+    - { point: 霸州分输站\流量计2参数\GDYL, unit: MPa,tableName: flow2_GDYL }
+    - { point: 霸州分输站\流量计3参数\BKSSLL, unit: Nm3/h ,tableName: flow3_BKSSLL }
+    - { point: 霸州分输站\流量计3参数\GDYL, unit: MPa,tableName: flow3_GDYL }
+    - { point: 霸州分输站\流量计4参数\BKSSLL, unit: Nm3/h,tableName: flow4_BKSSLL }
+    - { point: 霸州分输站\流量计4参数\GDYL, unit: MPa,tableName: flow4_GDYL }

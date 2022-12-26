@@ -48,6 +48,8 @@ public class SchedulerTask {
     public void transferSchedule() throws Exception {
         logger.info("starting transfer...");
 
+//        this.printNodeTree();
+
         List<Gas> addList = new ArrayList<>();
         List<Gas> list = points.getList();
         String dateStr = sdf.format(new Date());
@@ -55,11 +57,14 @@ public class SchedulerTask {
             Gas item = list.get(i);
             Gas g = new Gas();
             g.setTs(dateStr);
-            g.setPoint(item.getPoint());
-            g.setPname(item.getPoint());
+            g.setPoint(region + sep + item.getTableName());
+            g.setPname(region + sep + item.getPoint());
             g.setUnit(item.getUnit());
             g.setRegion(region);
             Double value = this.getPointValue(item.getPoint());
+            if (value == Double.MIN_VALUE) {
+                continue;
+            }
             g.setValue(value);
             logger.debug("######point_data:" + g.toString());
             addList.add(g);
@@ -67,6 +72,17 @@ public class SchedulerTask {
 
         WritterResult result = this.addMultiTaos(addList);
         logger.info(result.getMessage());
+    }
+
+    public void printNodeTree() throws Exception {
+        //创建OPC UA客户端
+        if (opcUaClient == null) {
+            opcUaClient = connector.createClient(opcUrl);
+            //开启连接
+            opcUaClient.connect().get();
+        }
+
+        connector.browseNode(opcUaClient, null);
     }
 
     public Double getPointValue(String point) throws Exception {
@@ -79,8 +95,12 @@ public class SchedulerTask {
 
         //读
         DataValue data = connector.readNode(opcUaClient, point);
+        if (data.getValue().getValue() == null) {
+            return Double.MIN_VALUE;
+        }
 
-        return (Double) data.getValue().getValue();
+        String s = String.valueOf(data.getValue().getValue());
+        return Double.parseDouble(s);
     }
 
     public WritterResult addMultiTaos(List<Gas> list) {
