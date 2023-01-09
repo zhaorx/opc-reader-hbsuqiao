@@ -265,7 +265,7 @@ public class OpcConnector {
             if (Objects.requireNonNull(nd.getBrowseName().getName()).contains("_")) {
                 continue;
             }
-            System.out.println("Node= " + nd.getBrowseName().getName());
+            System.out.println("Node= " + nd.getNodeId().toString() + ":" + nd.getBrowseName().getName());
             browseNode(client, nd);
         }
     }
